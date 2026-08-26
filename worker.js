@@ -11,6 +11,7 @@ export default {
     if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
     try {
+      if (!env.CRM) return json({ error: 'The CRM secret is not available to the production site.' }, 500);
       const data = await request.json();
       if (!data.name && !data.email) return json({ error: 'Name or email is required.' }, 400);
 
@@ -42,7 +43,7 @@ export default {
       });
       if (!fub.ok) {
         console.error('FUB rejected lead', fub.status, await fub.text());
-        return json({ error: 'Unable to submit lead.' }, 502);
+        return json({ error: `Follow Up Boss rejected the submission (${fub.status}).` }, 502);
       }
       return json({ ok: true });
     } catch (error) {
