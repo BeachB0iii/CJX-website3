@@ -6,6 +6,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    if (url.pathname === '/api/videos' && request.method === 'GET') return latestVideos();
     if (url.pathname !== '/api/lead') return env.ASSETS.fetch(request);
     if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
@@ -53,4 +54,27 @@ export default {
 
 function json(value, status = 200) {
   return new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });
+}
+
+async function latestVideos() {
+  const channelId = 'UCSk96f2InocpjuqKIFLQS1A';
+  const response = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
+  if (!response.ok) return json({ error: 'Unable to load videos.' }, 502);
+  const xml = await response.text();
+  const videos = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].slice(0, 4).map((match) => {
+    const entry = match[1];
+    const read = (pattern) => decodeXml((entry.match(pattern) || ['', ''])[1]);
+    const videoId = read(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+    return {
+      title: read(/<title>([\s\S]*?)<\/title>/),
+      url: `https://www.youtube.com/watch?v=${videoId}`,
+      thumbnail: (entry.match(/<media:thumbnail url="([^"]+)"/) || ['', ''])[1],
+      published: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(read(/<published>([^<]+)<\/published>/)))
+    };
+  }).filter((video) => video.url && video.thumbnail);
+  return new Response(JSON.stringify(videos), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=600' } });
+}
+
+function decodeXml(value) {
+  return value.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 }
