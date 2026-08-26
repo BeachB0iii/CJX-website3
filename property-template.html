@@ -17,7 +17,20 @@
   <section class="wrap intro"><div><div class="eyebrow">Welcome home</div><h2>Designed for the way you want to live.</h2></div><p>This is a ready-to-customize property page designed to give paid-ad visitors everything they need in one elegant place: the story, the details, the photography, and a direct path to schedule a showing. Replace this sample copy and imagery with the listing’s real information.</p></section>
   <section class="wrap gallery" aria-label="Property gallery"><div class="one"></div><div class="two"></div><div class="three"></div></section>
   <section class="details"><div class="wrap details-grid"><div><div class="eyebrow">At a glance</div><h2>Property details</h2></div><div class="detail-list"><div>Property type <b>Single-family home</b></div><div>Year built <b>2021</b></div><div>Garage <b>3-car</b></div><div>Community <b>Scottsdale</b></div><div>MLS number <b>XXXXXXX</b></div></div></div></section>
-  <section class="cta" id="tour"><div class="wrap"><div class="eyebrow" style="color:#d5a186">Private tour</div><h2>See it for yourself.</h2><p>Request a showing or ask a question. CJX will be in touch with the details.</p><form class="form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Request received'" ><input required placeholder="Your name"><input type="email" required placeholder="Email address"><button class="button light">Request a tour →</button></form></div></section></main>
+  <section class="cta" id="tour"><div class="wrap"><div class="eyebrow" style="color:#d5a186">Private tour</div><h2>See it for yourself.</h2><p>Request a showing or ask a question. CJX will be in touch with the details.</p><form class="form lead-form" data-lead-type="Property Inquiry"><input name="name" required placeholder="Your name"><input name="email" type="email" required placeholder="Email address"><input name="phone" type="tel" placeholder="Phone number"><button class="button light">Request a tour →</button></form></div></section></main>
   <footer>Presented by CJX Real Estate at HomeSmart Realty · Scottsdale · Phoenix Metro · Arizona</footer>
+  <script>
+    document.querySelector('.lead-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget, button = form.querySelector('button'), original = button.textContent;
+      button.disabled = true; button.textContent = 'Sending…';
+      try {
+        const data = Object.fromEntries(new FormData(form));
+        const response = await fetch('/api/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({...data, type:form.dataset.leadType, propertyAddress:document.querySelector('h1').textContent, pageUrl:location.href})});
+        if (!response.ok) throw new Error('Lead submission failed');
+        form.reset(); button.textContent = 'Request received';
+      } catch (error) { button.disabled = false; button.textContent = 'Please try again'; setTimeout(() => button.textContent = original, 3500); }
+    });
+  </script>
 </body>
 </html>

@@ -32,9 +32,29 @@
   <section class="video" id="videos"><div class="wrap video-grid"><div><div class="eyebrow">Watch & learn</div><h2>Arizona real estate, without the spin.</h2><p style="line-height:1.7;color:#59625c">Follow along for practical local insights, neighborhood context, and a look at what’s moving in the market.</p><a class="button" href="https://www.youtube.com/@ChristianJerman" target="_blank" rel="noopener">Visit the YouTube channel →</a></div><div class="video-card"><div class="video-player"><iframe src="https://www.youtube.com/embed?listType=user_uploads&list=ChristianJerman" title="Latest videos from Christian Jerman" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><p>Latest videos from Christian Jerman</p></div></div></section>
   <section class="quote"><div class="eyebrow">The CJX approach</div><blockquote>“The best real estate decisions begin with clarity, not pressure.”</blockquote><cite>CJX REAL ESTATE · ARIZONA</cite></section>
   <section class="recognition"><div class="wrap recognition-grid"><div><div class="eyebrow">Why CJX</div><h2>Strategy that stays personal.</h2></div><div class="awards"><div>Local Scottsdale & Phoenix Metro expertise</div><div>Direct communication at every step</div><div>Property marketing built for modern buyers</div><div>HomeSmart Realty representation</div></div></div></section>
-  <section class="valuation"><div class="wrap"><div class="eyebrow" style="color:#d5a186">Home valuation</div><h2>Start with a clear number.</h2><p>Get a practical conversation about your home’s current position in the Scottsdale and Phoenix Metro market.</p><form class="valuation-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thanks — I’ll follow up.'"><input required placeholder="Enter your property address"><button class="button light">Get started →</button></form></div></section>
-  <section class="newsletter"><div class="wrap newsletter-grid"><div><div class="eyebrow">Stay connected</div><h2>Arizona market insight, delivered simply.</h2><p>Occasional local market context, listings, and useful real estate guidance—without the noise.</p></div><form class="newsletter-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='You’re on the list.'"><input placeholder="First name" required><input type="email" placeholder="Email address" required><button class="button">Subscribe →</button></form></div></section>
-  <section class="contact" id="contact"><div class="wrap contact-grid"><div><div class="eyebrow">Let’s talk</div><h2>Ready when<br>you are.</h2><p>Tell me a little about your move. I’ll follow up with a straightforward conversation and a useful next step.</p></div><form class="contact-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thanks — I’ll be in touch.'"><input placeholder="Your name" required><input type="email" placeholder="Email address" required><textarea placeholder="What can I help with?"></textarea><button class="button light">Send your message →</button></form></div></section></main>
+  <section class="valuation"><div class="wrap"><div class="eyebrow" style="color:#d5a186">Home valuation</div><h2>Start with a clear number.</h2><p>Get a practical conversation about your home’s current position in the Scottsdale and Phoenix Metro market.</p><form class="valuation-form lead-form" data-lead-type="Seller Inquiry"><input name="address" required placeholder="Enter your property address"><input name="email" type="email" required placeholder="Email address"><button class="button light">Get started →</button></form></div></section>
+  <section class="newsletter"><div class="wrap newsletter-grid"><div><div class="eyebrow">Stay connected</div><h2>Arizona market insight, delivered simply.</h2><p>Occasional local market context, listings, and useful real estate guidance—without the noise.</p></div><form class="newsletter-form lead-form" data-lead-type="Registration"><input name="name" placeholder="First name" required><input name="email" type="email" placeholder="Email address" required><button class="button">Subscribe →</button></form></div></section>
+  <section class="contact" id="contact"><div class="wrap contact-grid"><div><div class="eyebrow">Let’s talk</div><h2>Ready when<br>you are.</h2><p>Tell me a little about your move. I’ll follow up with a straightforward conversation and a useful next step.</p></div><form class="contact-form lead-form" data-lead-type="General Inquiry"><input name="name" placeholder="Your name" required><input name="email" type="email" placeholder="Email address" required><input name="phone" type="tel" placeholder="Phone number"><textarea name="message" placeholder="What can I help with?"></textarea><button class="button light">Send your message →</button></form></div></section></main>
   <footer><div class="wrap"><span>© 2026 CJX Real Estate. All rights reserved.</span><span><img class="homesmart-logo" src="assets-homesmart-logo.png" alt="HomeSmart Realty"> · Scottsdale · Phoenix Metro · Arizona</span></div></footer>
+  <script>
+    document.querySelectorAll('.lead-form').forEach((form) => form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = form.querySelector('button');
+      const original = button.textContent;
+      button.disabled = true; button.textContent = 'Sending…';
+      const fields = Object.fromEntries(new FormData(form));
+      try {
+        const response = await fetch('/api/lead', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({...fields, type: form.dataset.leadType, pageUrl: location.href})
+        });
+        if (!response.ok) throw new Error('Lead submission failed');
+        form.reset(); button.textContent = 'Thanks — I’ll be in touch.';
+      } catch (error) {
+        button.disabled = false; button.textContent = 'Please try again';
+        setTimeout(() => { button.textContent = original; }, 3500);
+      }
+    }));
+  </script>
 </body>
 </html>
