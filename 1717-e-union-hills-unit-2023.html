@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18420662026"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18420662026');
+  </script>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>1717 E Union Hills Dr #2023 | Phoenix, AZ | CJX Real Estate</title>
   <meta name="description" content="Explore 1717 E Union Hills Dr #2023 in Phoenix, Arizona. Two bedrooms, two baths, 1,160 square feet. Presented by Christian Jerman at CJX Real Estate.">
@@ -19,5 +27,24 @@
     <section class="media"><div class="wrap"><div class="eyebrow">Watch the tour</div><h2>See the feeling behind the floor plan.</h2><div class="video"><iframe src="https://www.youtube.com/embed/aygfWI9BEEo" title="1717 E Union Hills Dr #2023 property tour" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border:0;width:100%;height:100%"></iframe></div><div class="gallery" aria-label="Property photo gallery"><button class="photo" type="button"><img src="assets-1717-01.jpg" alt="Exterior of 1717 E Union Hills Drive" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-03.jpg" alt="Open living room and staircase" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-05.jpg" alt="Living room with fireplace and patio doors" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-09.jpg" alt="Kitchen with white cabinetry" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-11.jpg" alt="Kitchen and breakfast bar" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-14.jpg" alt="Bedroom with ensuite vanity" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-16.jpg" alt="Bedroom with patio access" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-22.jpg" alt="Loft with skylights" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-26.jpg" alt="Full bathroom" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-30.jpg" alt="Private enclosed patio" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-36.jpg" alt="Community pool" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-37.jpg" alt="Community pool and courtyard" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-40.jpg" alt="Landscaped community walkway" loading="lazy"></button><button class="photo" type="button"><img src="assets-1717-43.jpg" alt="Second community pool" loading="lazy"></button></div><p class="gallery-note">Swipe or scroll through all 14 property and community photos.</p></div></section>
     <section class="connect" id="inquire"><div class="wrap"><div class="eyebrow">Private tour</div><h2>Make your next move with confidence.</h2><p>Ask a question, request a showing, or tell Christian what you need. Your inquiry goes directly to the CJX Real Estate team.</p><form class="form lead-form" data-lead-type="Property Inquiry"><input name="name" required placeholder="Your name"><input name="email" type="email" required placeholder="Email address"><input name="phone" type="tel" placeholder="Phone number"><input name="preferredTime" placeholder="Best time to connect"><textarea name="message" placeholder="What would you like to know?"></textarea><button class="button bronze">Request a tour →</button></form></div></section>
   </main><footer>Presented by Christian Jerman · CJX Real Estate · HomeSmart Realty · All information deemed reliable but not guaranteed; buyer to verify.</footer>
-  <script>document.querySelector('.lead-form').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget,b=f.querySelector('button'),o=b.textContent;b.disabled=true;b.textContent='Sending…';try{const data=Object.fromEntries(new FormData(f));const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...data,type:f.dataset.leadType,propertyAddress:'1717 E Union Hills Dr #2023, Phoenix, AZ 85024',pageUrl:location.href})});if(!r.ok)throw new Error((await r.json()).error);f.reset();b.textContent='Request received'}catch(err){b.disabled=false;b.textContent=err.message||'Please try again';setTimeout(()=>b.textContent=o,4000)}});</script>
+  <script>
+    const gallery = document.querySelector('.gallery');
+    const stagedPhotos = [
+      { after: 'assets-1717-05.jpg', src: 'assets-1717-staged-living-room.jpg', alt: 'Virtually staged living room with fireplace and patio doors' },
+      { after: 'assets-1717-16.jpg', src: 'assets-1717-staged-bedroom.jpg', alt: 'Virtually staged bedroom with patio access' },
+      { after: 'assets-1717-30.jpg', src: 'assets-1717-staged-patio.jpg', alt: 'Virtually staged private enclosed patio' }
+    ];
+    stagedPhotos.forEach(photo => {
+      const original = [...gallery.querySelectorAll('img')].find(image => image.getAttribute('src') === photo.after);
+      if (!original) return;
+      const button = document.createElement('button');
+      button.className = 'photo';
+      button.type = 'button';
+      button.innerHTML = `<img src="${photo.src}" alt="${photo.alt}" loading="lazy">`;
+      original.closest('.photo').after(button);
+    });
+    document.querySelector('.gallery-note').textContent = `Swipe or scroll through all ${gallery.querySelectorAll('img').length} property, virtually staged, and community photos.`;
+
+    document.querySelector('.lead-form').addEventListener('submit',async e=>{e.preventDefault();const f=e.currentTarget,b=f.querySelector('button'),o=b.textContent;b.disabled=true;b.textContent='Sending…';try{const data=Object.fromEntries(new FormData(f));const r=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...data,type:f.dataset.leadType,propertyAddress:'1717 E Union Hills Dr #2023, Phoenix, AZ 85024',pageUrl:location.href})});if(!r.ok)throw new Error((await r.json()).error);f.reset();b.textContent='Request received'}catch(err){b.disabled=false;b.textContent=err.message||'Please try again';setTimeout(()=>b.textContent=o,4000)}});
+  </script>
 </body></html>
