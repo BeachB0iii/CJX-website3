@@ -24,12 +24,19 @@ export default {
       };
       const messageParts = [
         data.message && `Message: ${data.message}`,
+        data.preferredTime && `Best time to connect: ${data.preferredTime}`,
         data.address && `Property address: ${data.address}`,
         data.propertyAddress && `Listing: ${data.propertyAddress}`,
-        data.pageUrl && `Page: ${data.pageUrl}`
+        data.pageUrl && `Page: ${data.pageUrl}`,
+        data.gclid && `Google click ID: ${data.gclid}`,
+        data.utmSource && `UTM source: ${data.utmSource}`,
+        data.utmMedium && `UTM medium: ${data.utmMedium}`,
+        data.utmCampaign && `UTM campaign: ${data.utmCampaign}`
       ].filter(Boolean);
       const payload = {
-        source: 'cjxrealty.com',
+        source: data.gclid || data.utmSource === 'google'
+          ? 'Google Ads - 1717 E Union Hills'
+          : 'cjxrealty.com',
         system: 'CJX Website',
         type: data.type || 'General Inquiry',
         message: messageParts.join('\n'),
