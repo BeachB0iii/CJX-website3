@@ -93,6 +93,7 @@
         const response = await fetch('/api/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({...data, type:form.dataset.leadType, propertyAddress:fullAddress, pageUrl:location.href, gclid:params.get('gclid'), utmSource:params.get('utm_source'), utmMedium:params.get('utm_medium'), utmCampaign:params.get('utm_campaign')})});
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(result.error || 'Please try again.');
+        gtag('event', 'conversion', {'send_to': 'AW-18420662026/EjqiCPWIwvQcEIr-089E'});
         form.reset(); status.textContent = 'Request received. Christian will be in touch.'; button.textContent = 'Sent';
       } catch (error) { button.disabled = false; button.textContent = original; status.textContent = error.message || 'Please try again.'; }
     });
