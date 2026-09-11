@@ -89,7 +89,8 @@
       button.disabled = true; status.textContent = 'Sending…';
       try {
         const data = Object.fromEntries(new FormData(form));
-        const response = await fetch('/api/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({...data, type:form.dataset.leadType, propertyAddress:fullAddress, pageUrl:location.href})});
+        const params = new URLSearchParams(location.search);
+        const response = await fetch('/api/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({...data, type:form.dataset.leadType, propertyAddress:fullAddress, pageUrl:location.href, gclid:params.get('gclid'), utmSource:params.get('utm_source'), utmMedium:params.get('utm_medium'), utmCampaign:params.get('utm_campaign')})});
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(result.error || 'Please try again.');
         form.reset(); status.textContent = 'Request received. Christian will be in touch.'; button.textContent = 'Sent';
