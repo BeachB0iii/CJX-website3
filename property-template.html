@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18420662026"></script>
+  <script>
+    // Visitors whose browser sends a Global Privacy Control signal don't get the Google Ads tag.
+    if (!navigator.globalPrivacyControl) {
+      var adsTag = document.createElement('script');
+      adsTag.async = true;
+      adsTag.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18420662026';
+      document.head.appendChild(adsTag);
+    }
+  </script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -80,7 +88,7 @@
     document.querySelector('#facts').innerHTML = [[PROPERTY.beds,'Beds'],[PROPERTY.baths,'Baths'],[PROPERTY.sqft,'Sq. Ft.']].map(([value,label]) => `<div>${value} <span>${label}</span></div>`).join('');
     document.querySelector('#details').innerHTML = [['Price',PROPERTY.price],['Beds',PROPERTY.beds],['Baths',PROPERTY.baths],['Living area',`${PROPERTY.sqft} sq. ft.`],['Year built',PROPERTY.yearBuilt],['Property type',PROPERTY.type],['MLS number',PROPERTY.mls]].map(([label,value]) => `<div>${label} <b>${value}</b></div>`).join('');
     const videoId = youtubeId(PROPERTY.videoUrl);
-    document.querySelector('#video').innerHTML = videoId ? `<iframe src="https://www.youtube.com/embed/${videoId}" title="${PROPERTY.address} property tour" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>` : '<p style="padding:30px;color:white">Property tour coming soon.</p>';
+    document.querySelector('#video').innerHTML = videoId ? `<iframe src="https://www.youtube-nocookie.com/embed/${videoId}" title="${PROPERTY.address} property tour" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>` : '<p style="padding:30px;color:white">Property tour coming soon.</p>';
     document.querySelector('#gallery').innerHTML = PROPERTY.gallery.map(photo => `<img src="${photo.src}" alt="${photo.alt}" loading="lazy">`).join('');
 
     document.querySelector('.lead-form').addEventListener('submit', async (event) => {

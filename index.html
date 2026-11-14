@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18420662026"></script>
+  <script>
+    // Visitors whose browser sends a Global Privacy Control signal don't get the Google Ads tag.
+    if (!navigator.globalPrivacyControl) {
+      var adsTag = document.createElement('script');
+      adsTag.async = true;
+      adsTag.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18420662026';
+      document.head.appendChild(adsTag);
+    }
+  </script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -453,7 +461,7 @@
         <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Christian was such a great listener and was intent to understand my needs. He was patient and continued showing multiple listings until I discovered the right one.”</blockquote><figcaption><b>Robert N.</b>Bought near ASU in Tempe</figcaption></figure>
         <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Christian has been the keystone in our real estate ventures! We have worked on several development projects together and he was instrumental in making it happen.”</blockquote><figcaption><b>Jay W.</b>Development partner</figcaption></figure>
         <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Because of him, I was able to secure a deal that was advantageous for everyone involved and now me and my family get to have our own home.”</blockquote><figcaption><b>Gilbert L.</b>New-build buyer</figcaption></figure>
-        <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Christian was amazing to work with. I will continue to use Christian for my real estate needs and highly recommend him to anyone in the market!”</blockquote><figcaption><b>Sean O.</b>Client</figcaption></figure>
+        <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Christian was amazing to work with. I will continue to use Christian for my real estate needs and highly recommend him to anyone in the market!”</blockquote><figcaption><b>Sean O.</b>Seller</figcaption></figure>
         <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Great experience with Christian helping us find a home. A true professional. Highly recommended.”</blockquote><figcaption><b>Jacob G.</b>Buyer</figcaption></figure>
       </div>
     </div></section>
