@@ -192,10 +192,18 @@
     .video-loading { grid-column: 1 / -1; padding: 40px 0; color: #a9b5ad; }
 
     /* Reviews */
-    .reviews { padding: 110px 0; text-align: center; background: var(--paper); }
-    .reviews .stars { color: var(--gold); letter-spacing: .3em; font-size: 1.1rem; margin-bottom: 20px; }
-    .reviews p { color: var(--muted); max-width: 50ch; margin: 20px auto 32px; }
-    .reviews .actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+    .reviews { padding: 112px 0; background: var(--paper); }
+    .reviews-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; margin-bottom: 50px; }
+    .reviews .actions { display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
+    .review-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+    .review { margin: 0; padding: 36px 34px 38px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; }
+    .review:not(:nth-child(3n+1)) { padding-left: 34px; border-left: 1px solid var(--line); }
+    .review .stars { color: var(--gold); letter-spacing: .25em; font-size: .9rem; margin-bottom: 16px; }
+    .review blockquote { margin: 0 0 22px; font: 400 1.22rem/1.45 var(--display); color: var(--ink); }
+    .review figcaption { margin-top: auto; font-size: .92rem; color: var(--muted); }
+    .review figcaption b { display: block; font-weight: 600; color: var(--ink); }
+    .form-note { font-size: .85rem; color: #a9b5ad; margin-top: 4px; }
+    .form-note a, .legal a { color: var(--gold-pale); border-bottom: 1px solid rgba(227,207,160,.4); }
 
     /* Forms */
     input, textarea { font: inherit; font-size: 16px; width: 100%; min-width: 0; padding: 14px 16px; border-radius: 0; }
@@ -244,6 +252,9 @@
       .film-grid figure { height: 380px; }
       .valuation-form { grid-template-columns: 1fr 1fr; }
       .valuation-form button { grid-column: 1 / -1; }
+      .review-grid { grid-template-columns: 1fr 1fr; }
+      .review, .review:not(:nth-child(3n+1)) { padding: 32px 28px 34px 0; border-left: 0; }
+      .review:nth-child(even) { padding-left: 28px; border-left: 1px solid var(--line); }
     }
     @media (max-width: 760px) {
       body { font-size: 16px; }
@@ -267,7 +278,12 @@
       .promise { padding: 76px 0; }
       .agent, .listing, .approach, .videos, .services, .valuation, .contact { padding: 80px 0; }
       .film { padding: 80px 0 0; }
-      .newsletter, .reviews { padding: 76px 0; }
+      .newsletter { padding: 76px 0; }
+      .reviews { padding: 80px 0; }
+      .reviews-head { display: block; margin-bottom: 36px; }
+      .reviews .actions { margin-top: 26px; }
+      .review-grid { grid-template-columns: 1fr; }
+      .review, .review:not(:nth-child(3n+1)), .review:nth-child(even) { padding: 30px 0 32px; border-left: 0; }
       .agent-grid, .approach-grid, .videos-grid, .newsletter-grid, .contact-grid, .film-head { grid-template-columns: 1fr; gap: 44px; }
       .listing-card { grid-template-columns: 1fr; }
       .portrait { max-width: 300px; margin: 14px auto 0; }
@@ -425,12 +441,20 @@
     </div></section>
 
     <section class="reviews on-light"><div class="wrap">
-      <div class="stars" aria-hidden="true">★★★★★</div>
-      <h2>Hear it from my clients.</h2>
-      <p>Client reviews live on Google, where anyone can read them in full. If we’ve worked together, I’d be grateful for yours.</p>
-      <div class="actions">
-        <a class="button dark" href="https://share.google/BOeXHH8GZNB7SUWBh" target="_blank" rel="noopener">Read reviews on Google</a>
-        <a class="button outline" href="https://g.page/r/CTOv34HIIUVoEBM/review" target="_blank" rel="noopener">Leave a review</a>
+      <div class="reviews-head">
+        <div><p class="kicker">Reviews from Google</p><h2>Hear it from my clients.</h2></div>
+        <div class="actions">
+          <a class="button dark" href="https://share.google/BOeXHH8GZNB7SUWBh" target="_blank" rel="noopener">Read them all on Google</a>
+          <a class="button outline" href="https://g.page/r/CTOv34HIIUVoEBM/review" target="_blank" rel="noopener">Leave a review</a>
+        </div>
+      </div>
+      <div class="review-grid">
+        <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Christian didn’t seem like the ones who just wants to make a sale, he wants to make a client! He made one of the biggest decisions in our life possibly as easy as it could have been.”</blockquote><figcaption><b>Kendal W.</b>First-time buyer</figcaption></figure>
+        <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Christian was such a great listener and was intent to understand my needs. He was patient and continued showing multiple listings until I discovered the right one.”</blockquote><figcaption><b>Robert N.</b>Bought near ASU in Tempe</figcaption></figure>
+        <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Christian has been the keystone in our real estate ventures! We have worked on several development projects together and he was instrumental in making it happen.”</blockquote><figcaption><b>Jay W.</b>Development partner</figcaption></figure>
+        <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Because of him, I was able to secure a deal that was advantageous for everyone involved and now me and my family get to have our own home.”</blockquote><figcaption><b>Gilbert L.</b>New-build buyer</figcaption></figure>
+        <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Christian was amazing to work with. I will continue to use Christian for my real estate needs and highly recommend him to anyone in the market!”</blockquote><figcaption><b>Sean O.</b>Client</figcaption></figure>
+        <figure class="review"><div class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“Great experience with Christian helping us find a home. A true professional. Highly recommended.”</blockquote><figcaption><b>Jacob G.</b>Buyer</figcaption></figure>
       </div>
     </div></section>
 
@@ -470,6 +494,7 @@
         <input name="phone" type="tel" placeholder="Phone number" aria-label="Phone number" autocomplete="tel">
         <textarea name="message" placeholder="What can I help with?" aria-label="What can I help with?"></textarea>
         <button class="button">Send message</button>
+        <p class="form-note">I only use your details to get back to you. <a href="privacy.html">Privacy policy</a></p>
       </form>
     </div></section>
   </main>
@@ -500,7 +525,7 @@
         <a href="https://g.page/r/CTOv34HIIUVoEBM/review" target="_blank" rel="noopener" aria-label="Google reviews"><i class="fa-brands fa-google"></i></a>
       </div>
     </div>
-    <p class="legal">© 2026 CJX Real Estate. All rights reserved. Equal Housing Opportunity. All information deemed reliable but not guaranteed.</p>
+    <p class="legal">© 2026 CJX Real Estate. All rights reserved. Equal Housing Opportunity. All information deemed reliable but not guaranteed. <a href="privacy.html">Privacy policy</a></p>
   </div></footer>
 
   <script>
