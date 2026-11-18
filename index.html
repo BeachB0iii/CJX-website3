@@ -192,11 +192,18 @@
     .videos { background: var(--pine); color: var(--ivory); padding: 112px 0; }
     .videos-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; align-items: center; }
     .videos-intro > p:not(.kicker) { color: #c3cdc6; margin: 22px 0 30px; max-width: 42ch; }
-    .video-feed { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 20px; }
-    .video-card img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--pine-deep); border: 1px solid rgba(194,162,90,.35); }
-    .video-card p { font-weight: 500; line-height: 1.35; margin: 12px 0 2px; }
-    .video-card span { font-size: .85rem; color: #a9b5ad; }
+    .video-feed { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 20px; }
+    .video-card { display: block; }
+    .video-thumb { position: relative; display: block; background: var(--pine-deep); border: 1px solid rgba(194,162,90,.35); overflow: hidden; }
+    .video-thumb img { width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform .5s; }
+    .video-card:hover .video-thumb img { transform: scale(1.04); }
+    .video-tag { position: absolute; left: 8px; bottom: 8px; padding: 3px 8px; background: rgba(10,29,24,.82); color: var(--gold-pale); font-size: .74rem; font-weight: 600; line-height: 1.3; }
+    .video-card p { font-weight: 500; line-height: 1.35; margin: 12px 0 4px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .video-card .when { font-size: .85rem; color: #a9b5ad; }
     .video-card:hover p { color: var(--gold-pale); }
+    .video-card.short { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 16px; align-items: center; }
+    .video-card.short .video-thumb img { aspect-ratio: 9 / 16; }
+    .video-card.short p { margin-top: 0; }
     .video-loading { grid-column: 1 / -1; padding: 40px 0; color: #a9b5ad; }
 
     /* Reviews */
@@ -256,6 +263,7 @@
     @media (max-width: 960px) {
       .links { gap: 20px; }
       .agent-grid, .approach-grid, .videos-grid { gap: 50px; }
+      .videos-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .film-grid figure { height: 380px; }
       .valuation-form { grid-template-columns: 1fr 1fr; }
@@ -306,7 +314,11 @@
       .film-grid figure:first-child { grid-column: 1 / -1; height: 250px; }
       .listing-photo { min-height: 260px; }
       .listing-body { padding: 34px 24px; }
-      .video-feed, .valuation-form, .newsletter-form { grid-template-columns: 1fr; }
+      .valuation-form, .newsletter-form { grid-template-columns: 1fr; }
+      .video-feed { gap: 30px 14px; }
+      .video-card.video { grid-column: 1 / -1; }
+      .video-card.short { display: block; }
+      .video-card.short p { margin-top: 12px; }
       .valuation-form button, .newsletter-form button { grid-column: auto; }
       .footer-grid { grid-template-columns: 1fr; gap: 38px; }
       .footer-socials { grid-template-columns: repeat(4, 44px); }
@@ -321,7 +333,7 @@
         <a href="https://www.facebook.com/christian.jerman.7/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
         <a href="https://www.linkedin.com/in/cjerman/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         <a href="https://www.instagram.com/christian_jerman/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@ChristianJerman" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.youtube.com/@SettleInAZ" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
         <a href="https://www.tiktok.com/@christian.jerman.realtor" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
       </div>
       <a href="https://calendar.app.google/7j167mW7zFBQFGzy7" target="_blank" rel="noopener">Schedule a consultation</a>
@@ -365,7 +377,7 @@
       <p>CJX helps you make confident real estate decisions through straightforward strategy, local knowledge, and truly personal service.</p>
       <div class="find">
         <span>Find CJX on</span>
-        <a href="https://www.youtube.com/@ChristianJerman" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://www.youtube.com/@SettleInAZ" target="_blank" rel="noopener">YouTube</a>
         <a href="https://share.google/BOeXHH8GZNB7SUWBh" target="_blank" rel="noopener">Google</a>
         <a href="https://www.instagram.com/christian_jerman/" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.facebook.com/christian.jerman.7/" target="_blank" rel="noopener">Facebook</a>
@@ -440,10 +452,10 @@
 
     <section class="videos" id="videos"><div class="wrap videos-grid">
       <div class="videos-intro">
-        <p class="kicker">Watch and learn</p>
+        <p class="kicker">Settle In AZ on YouTube</p>
         <h2>Arizona real estate, without the spin.</h2>
         <p>Practical local insights, neighborhood context, and a look at what’s moving in the market.</p>
-        <a class="button ghost" href="https://www.youtube.com/@ChristianJerman" target="_blank" rel="noopener">Visit the YouTube channel</a>
+        <a class="button ghost" href="https://www.youtube.com/@SettleInAZ" target="_blank" rel="noopener">Watch Settle In AZ</a>
       </div>
       <div class="video-feed" id="video-feed" aria-live="polite"><div class="video-loading">Loading the latest from YouTube…</div></div>
     </div></section>
@@ -527,7 +539,7 @@
         <a href="https://www.facebook.com/christian.jerman.7/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
         <a href="https://www.linkedin.com/in/cjerman/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         <a href="https://www.instagram.com/christian_jerman/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@ChristianJerman" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.youtube.com/@SettleInAZ" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
         <a href="https://www.tiktok.com/@christian.jerman.realtor" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
         <a href="https://calendar.app.google/7j167mW7zFBQFGzy7" target="_blank" rel="noopener" aria-label="Book a call"><i class="fa-regular fa-calendar"></i></a>
         <a href="https://g.page/r/CTOv34HIIUVoEBM/review" target="_blank" rel="noopener" aria-label="Google reviews"><i class="fa-brands fa-google"></i></a>
@@ -564,13 +576,21 @@
     fetch('/api/videos').then((response) => response.ok ? response.json() : Promise.reject()).then((videos) => {
       const feed = document.querySelector('#video-feed');
       feed.replaceChildren(...videos.map((video) => {
-        const card = document.createElement('a'); card.className = 'video-card'; card.href = video.url; card.target = '_blank'; card.rel = 'noopener';
-        const image = document.createElement('img'); image.src = video.thumbnail; image.alt = ''; image.loading = 'lazy'; image.width = 480; image.height = 270;
+        const isShort = video.kind === 'short';
+        const card = document.createElement('a'); card.className = `video-card ${isShort ? 'short' : 'video'}`; card.href = video.url; card.target = '_blank'; card.rel = 'noopener';
+        const thumb = document.createElement('span'); thumb.className = 'video-thumb';
+        const image = document.createElement('img'); image.src = video.thumbnail; image.alt = ''; image.loading = 'lazy'; image.decoding = 'async';
+        image.width = isShort ? 270 : 480; image.height = isShort ? 480 : 270;
+        if (video.fallbackThumbnail) image.addEventListener('error', () => { if (image.src !== video.fallbackThumbnail) image.src = video.fallbackThumbnail; }, { once: true });
+        thumb.append(image);
+        if (isShort) { const tag = document.createElement('span'); tag.className = 'video-tag'; tag.textContent = 'Short'; thumb.append(tag); }
+        const text = document.createElement('span');
         const title = document.createElement('p'); title.textContent = video.title;
-        const date = document.createElement('span'); date.textContent = video.published;
-        card.append(image, title, date); return card;
+        const date = document.createElement('span'); date.className = 'when'; date.textContent = video.published;
+        text.append(title, date);
+        card.append(thumb, text); return card;
       }));
-    }).catch(() => { document.querySelector('#video-feed').innerHTML = '<a class="video-card" href="https://www.youtube.com/@ChristianJerman" target="_blank" rel="noopener"><p>Visit Christian’s YouTube channel</p></a>'; });
+    }).catch(() => { document.querySelector('#video-feed').innerHTML = '<a class="video-card video" href="https://www.youtube.com/@SettleInAZ" target="_blank" rel="noopener"><p>Watch Settle In AZ on YouTube</p></a>'; });
 
     document.querySelectorAll('.lead-form').forEach((form) => form.addEventListener('submit', async (event) => {
       event.preventDefault();

@@ -64,23 +64,60 @@ function json(value, status = 200) {
   return new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });
 }
 
+// Settle In AZ (youtube.com/@SettleInAZ). YouTube publishes a separate feed for a
+// channel's long-form videos (playlist UULF…) and for its Shorts (playlist UUSH…),
+// so the site can always show the newest 2 of each instead of only the newest 4 uploads.
+const YOUTUBE_CHANNEL_ID = 'UCpCx7oWIWL8Z2WjOT6qhHAg';
+const LONG_FORM_COUNT = 2;
+const SHORTS_COUNT = 2;
+
 async function latestVideos() {
-  const channelId = 'UCSk96f2InocpjuqKIFLQS1A';
-  const response = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
-  if (!response.ok) return json({ error: 'Unable to load videos.' }, 502);
-  const xml = await response.text();
-  const videos = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].slice(0, 4).map((match) => {
-    const entry = match[1];
-    const read = (pattern) => decodeXml((entry.match(pattern) || ['', ''])[1]);
-    const videoId = read(/<yt:videoId>([^<]+)<\/yt:videoId>/);
-    return {
-      title: read(/<title>([\s\S]*?)<\/title>/),
-      url: `https://www.youtube.com/watch?v=${videoId}`,
-      thumbnail: (entry.match(/<media:thumbnail url="([^"]+)"/) || ['', ''])[1],
-      published: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(read(/<published>([^<]+)<\/published>/)))
-    };
-  }).filter((video) => video.url && video.thumbnail);
-  return new Response(JSON.stringify(videos), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=600' } });
+  const base = YOUTUBE_CHANNEL_ID.slice(2);
+  const [longForm, shorts] = await Promise.all([
+    readFeed(`playlist_id=UULF${base}`, 'video'),
+    readFeed(`playlist_id=UUSH${base}`, 'short')
+  ]);
+
+  // Normally 2 + 2. If one feed is short on videos (or fails), fill from the other so there are still 4 cards.
+  const total = LONG_FORM_COUNT + SHORTS_COUNT;
+  const pickedLong = longForm.slice(0, Math.max(LONG_FORM_COUNT, total - Math.min(shorts.length, SHORTS_COUNT)));
+  const pickedShorts = shorts.slice(0, total - pickedLong.length);
+  let videos = [...pickedLong, ...pickedShorts];
+
+  // Last resort: the channel's combined uploads feed.
+  if (!videos.length) videos = (await readFeed(`channel_id=${YOUTUBE_CHANNEL_ID}`, 'video')).slice(0, total);
+  if (!videos.length) return json({ error: 'Unable to load videos.' }, 502);
+
+  return new Response(JSON.stringify(videos), {
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=900' }
+  });
+}
+
+async function readFeed(query, kind) {
+  try {
+    const response = await fetch(`https://www.youtube.com/feeds/videos.xml?${query}`, { cf: { cacheTtl: 900, cacheEverything: true } });
+    if (!response.ok) return [];
+    const xml = await response.text();
+    return [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].map((match) => {
+      const entry = match[1];
+      const read = (pattern) => decodeXml((entry.match(pattern) || ['', ''])[1]);
+      const videoId = read(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+      if (!videoId) return null;
+      return {
+        kind,
+        title: read(/<title>([\s\S]*?)<\/title>/),
+        url: kind === 'short' ? `https://www.youtube.com/shorts/${videoId}` : `https://www.youtube.com/watch?v=${videoId}`,
+        // Shorts get YouTube's vertical thumbnail; long-form videos get the standard one.
+        thumbnail: kind === 'short' ? `https://i.ytimg.com/vi/${videoId}/oar2.jpg` : `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+        fallbackThumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+        published: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/Phoenix' })
+          .format(new Date(read(/<published>([^<]+)<\/published>/)))
+      };
+    }).filter(Boolean);
+  } catch (error) {
+    console.error('YouTube feed failed', query, error);
+    return [];
+  }
 }
 
 function decodeXml(value) {
